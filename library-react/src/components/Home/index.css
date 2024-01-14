@@ -1,0 +1,17 @@
+.login-home-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    width: 30px;
+    height: 30px;
+    margin-left: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-home-button:hover {
+    background-color: #2978af;
+  }
+
+  

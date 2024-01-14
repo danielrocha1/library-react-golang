@@ -1,0 +1,30 @@
+/* src/components/BookList.css */
+
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    
+}
+  
+.book-grid-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+  
+
+
+.added-to-cart {
+  border: 2px solid #3498db; /* contorno escuro */
+  position: relative;
+}
+
+.added-to-cart::after {
+  content: '\2714'; /* Símbolo de marca de seleção (unicode) */
+  font-size: 24px;
+  color: #00cc00; /* Cor verde para o símbolo de ok */
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+

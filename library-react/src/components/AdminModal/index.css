@@ -1,0 +1,137 @@
+/* Adicione essas regras ao seu arquivo de estilo (por exemplo, index.css) */
+
+.modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    margin-top: -40px;
+  
+  }
+  
+  .modal-user {
+    left: 1450px;
+    position: absolute;
+    background-color: #fefefe;
+    transform: translateY(65%);
+    padding: 20px;
+    border: 3px solid #3498db;
+    border-radius: 9px;
+    width: 300px;
+    height: 250px;
+    color: white;
+  }
+  
+  
+  h2 {
+    color: rgb(0, 0, 0);
+    margin-top: -5px;;
+  }
+  
+  label {
+    color: rgb(0, 0, 0);
+    margin-left: 10px;
+  }
+  
+  
+  
+  
+  .modal-user h2 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .info-label {
+    flex: 1;
+    font-weight: bold;
+    color: #666;
+  }
+  
+  .book-label {
+    flex: 1;
+    font-weight: bold;
+    color: #0878e1;
+    border-color: #0878e1;
+    border-width: 1px;
+  }
+  
+  .book-label:hover {
+    flex: 1;
+    font-weight: bold;
+    background-color: #0878e1;
+    color: white;
+  }
+  
+  .profile-label {
+    flex: 1;
+    font-weight: bold;
+    color: #bf0f0f;
+    border-color: #bf0f0f;
+    border-width: 1px;
+  }
+  
+  .profile-label:hover {
+    flex: 1;
+    font-weight: bold;
+    background-color: #bf0f0f;
+    color: white;
+  }
+  
+  .profile-icon{
+    margin-right: 80px;
+    margin-left: -80px;
+    color: #bf0f0f;
+  }
+  .profile-label:hover .profile-icon {
+    color: #ffffff;
+  }
+  
+  
+  
+  .config-label {
+    flex: 1;
+    font-weight: bold;
+    color: #12431b;
+    border-color: #12431b;
+    border-width: 1px;
+  }
+  
+  .config-label:hover {
+    flex: 1;
+    font-weight: bold;
+    background-color: #12431b;
+    color: white;
+  }
+  
+  .config-icon{
+    margin-right: 65px;
+    margin-left: -65px;
+    color: #12431b;
+  }
+  .config-label:hover .config-icon {
+    color: #ffffff;
+  }
+  
+  .info-value {
+    flex: 2;
+    color: #333;
+  }
+  
+  .book-icon{
+    margin-right: 60px;
+    margin-left: -63px;
+    color: #1759a3;
+  }
+  .book-label:hover .book-icon {
+    color: #ffffff;
+  }

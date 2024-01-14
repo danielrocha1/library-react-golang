@@ -1,0 +1,45 @@
+/* src/App.css */
+.custom-modal {
+    position: fixed;
+    top: 0%;
+    left: -80%;
+    
+  }
+
+
+table {
+    width: calc(100% - 10px); /* Compensa a margem para manter a largura total da tabela */
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  thead {
+    text-align: center;
+    background-color: #274d66;
+    color: white;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  td button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 27px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  td button:hover {
+    background-color: #c0392b;
+  }
+  tbody {
+    background-color: #80a7f5f2;
+    font-weight: bolder;
+    font-size: 22px;
+  }
+  

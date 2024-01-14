@@ -1,0 +1,41 @@
+/* Adicione essas regras ao seu arquivo CSS ou componente de estilo */
+
+.book {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .book-title {
+    margin-bottom: 10px;
+  }
+  
+  .book-details {
+    font-size: 14px;
+  }
+  
+  .book-info {
+    margin: 5px 0;
+  }
+  
+  /* Adicione isso ao seu arquivo de estilos (por exemplo, App.css) */
+  .added-to-cart {
+    border: 2px solid #3498db; /* contorno escuro */
+    position: relative;
+  }
+  
+  .added-to-cart::after {
+    content: '\2714'; /* Símbolo de marca de seleção (unicode) */
+    font-size: 24px;
+    color: #00cc00; /* Cor verde para o símbolo de ok */
+    position: absolute;
+    top: 0;
+    right: 0;
+    
+  }
+
+  .book:hover {
+    border-color: #3498db;
+  }

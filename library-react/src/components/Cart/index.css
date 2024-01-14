@@ -1,0 +1,109 @@
+/* Adicione estilos para a div do carrinho flutuante */
+.cart {
+    position: fixed;
+    color:"white";
+    
+    top: 80%; /* Posiciona a div no meio da tela verticalmente */
+    right: 40px; /* Posiciona a div a 10 pixels da borda direita */
+    transform: translateY(-50%); /* Corrige a posição vertical para o centro */
+    background-color: #3498db; /* Cor de fundo da div */
+    border: 1px solid #124566; /* Borda da div */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 50%; /* Torna a div circular definindo um raio de borda igual à metade da largura/altura */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+    z-index: 1000; /* Certifica-se de que a div esteja acima de outros elementos na página */
+  }
+
+.booklist {
+    width: 320px; /* Ajuste a largura conforme necessário */
+    position: fixed;
+    color: white;
+    top: 50%;
+    right: 60px;
+    transform: translateY(-50%);
+    background-color: #3498db;
+    border: 1px solid #124566;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    
+    
+}
+  
+.booklist ul {
+  list-style: none;
+  padding: 0;
+  scroll-padding-left: 60px;
+    scrollbar-color: "darkgray transparent";
+  max-height: 200px;
+  overflow-y: auto; 
+}
+  
+.booklist li {
+    margin-bottom: 10px;
+}
+  
+.booklist button {
+  background-color: #e1244d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+  
+.booklist button:hover {
+    background-color: #cc002b;
+}
+
+   
+.modal-close {
+  height: 28px;
+  font-size: 12px;
+}
+
+/* Adicione estilos ao seu arquivo de estilo (por exemplo, index.css) */
+
+.table-container {
+  text-align: center;
+  overflow-y: auto;
+  scroll-padding-left: 3px; /* Move o scrollbar 3px para a direita */
+  scrollbar-color: darkgray transparent; /* Cor do scrollbar */
+}
+
+table {
+  width: calc(100% - 10px); /* Compensa a margem para manter a largura total da tabela */
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+thead {
+  text-align: center;
+  background-color: #274d66;
+  color: white;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  font-size: 16px;
+}
+
+td button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+
+}
+
+td button:hover {
+  background-color: #c0392b;
+}
+tbody {
+  background-color: #0c51f3f2;
+  font-weight: bolder;
+}

@@ -1,0 +1,36 @@
+/* Adicione essas regras ao seu arquivo de estilo (por exemplo, index.css) */
+
+.login-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 30px;
+  cursor: pointer;
+}
+
+.modal-content {
+  left: 1150px;
+  position: absolute;
+  background-color: #fefefe;
+  transform: translateY(75%);
+  padding: 20px;
+  border: 3px solid #3498db;
+  border-radius: 9px;
+  width: 600px;
+  color: white;
+}
+
+
+h2 {
+  color: rgb(0, 0, 0);
+  margin-top: -5px;;
+}
+
+label {
+  color: rgb(0, 0, 0);
+  margin-left: 10px;
+}
+

@@ -1,0 +1,71 @@
+/* src/components/MyBooks.css */
+.my-books-container {
+    text-align: center;
+  }
+  
+  .mybook-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .book-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-container:hover {
+    background-color: #f0bb85;
+  }
+
+  .book-container-false {
+    border-radius: 5px;
+    border: 1px solid #da3535;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    
+    transition: background-color 0.3s ease;
+  }
+
+  .book-container-false:hover {
+    background-color: #f73636;
+  }
+  
+  .book-container-conclued {
+    border-radius: 5px;
+    border: 1px solid #43bb41;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    
+    transition: background-color 0.3s ease;
+  }
+  
+  .book-container-conclued:hover {
+    background-color: #31c852;
+  }
+
+  .book-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .book-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .book-title {
+    margin: 10px 0;
+  }
+  
