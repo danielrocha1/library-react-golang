@@ -3,9 +3,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+<<<<<<< HEAD
 import { faUser, faBookOpen, faUserCog } from '@fortawesome/free-solid-svg-icons';
 
 const AdminModal = ({ setData, data }) => {
+=======
+import { faUser, faBookOpen, faUserCog, faSignOut } from '@fortawesome/free-solid-svg-icons';
+
+const AdminModal = ({ setData, data, setIsLoggedIn }) => {
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
   const [isOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -18,6 +24,14 @@ const AdminModal = ({ setData, data }) => {
     navigate('/gerenciar-livros');
     setIsModalOpen(!isOpen);
   };
+<<<<<<< HEAD
+=======
+  const handleLogOutClick = () => {
+    // Adicione aqui o caminho para a página "Meus Livros"
+    setIsLoggedIn(false)
+    setData('')
+  };
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
 
   const handleMyLoanClick = () => {
     // Adicione aqui o caminho para a página "Meus Livros"
@@ -87,6 +101,22 @@ const AdminModal = ({ setData, data }) => {
                   Configurações
                 </button>
               </div>
+<<<<<<< HEAD
+=======
+              <div className="info-row">
+              <button
+                  style={{ cursor: "pointer", marginTop: "10px", height: "25px" }}
+                  className="logout-label"
+                  onClick={handleLogOutClick}
+                ><FontAwesomeIcon
+                    icon={faSignOut}
+                    className='logout-icon'
+                    onClick={openModal}
+                  />
+                  Logout
+                </button>
+              </div>
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
               </div>
             </div>
         </>

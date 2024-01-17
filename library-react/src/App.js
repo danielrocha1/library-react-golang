@@ -95,11 +95,19 @@ const App = () => {
               setIsLoggedIn={setIsLoggedIn}
             />
           ) : data.type == 'student' ? (
+<<<<<<< HEAD
             <UserModal setData={setData} data={data} />
           )
           :
           (
             <AdminModal setData={setData} data={data} />
+=======
+            <UserModal setData={setData} data={data} setIsLoggedIn={setIsLoggedIn}/>
+          )
+          :
+          (
+            <AdminModal setData={setData} data={data} setIsLoggedIn={setIsLoggedIn}/>
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
            
           )
           }

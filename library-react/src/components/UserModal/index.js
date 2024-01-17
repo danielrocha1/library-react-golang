@@ -3,9 +3,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./index.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+<<<<<<< HEAD
 import { faUser, faBookOpen, faUserCog } from '@fortawesome/free-solid-svg-icons';
 
 const UserModal = ({ setData, data }) => {
+=======
+import { faUser, faBookOpen, faUserCog, faSignOut } from '@fortawesome/free-solid-svg-icons';
+
+const UserModal = ({ setData, data, setIsLoggedIn }) => {
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
   const [isOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -19,6 +25,15 @@ const UserModal = ({ setData, data }) => {
     setIsModalOpen(!isOpen);
   };
 
+<<<<<<< HEAD
+=======
+  const handleLogOutClick = () => {
+    // Adicione aqui o caminho para a página "Meus Livros"
+    setIsLoggedIn(false)
+    setData('')
+  };
+
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
   return (
     <div>
       <FontAwesomeIcon
@@ -50,7 +65,11 @@ const UserModal = ({ setData, data }) => {
     </div>
     <div className="info-row">
                 <button
+<<<<<<< HEAD
                   style={{ cursor: "pointer", marginTop: "15px", height: "25px" }}
+=======
+                  style={{ cursor: "pointer", marginTop: "10px", height: "25px" }}
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
                   className="profile-label"
                   onClick={() => {
                     // Add logic for "Meu Perfil" button
@@ -63,7 +82,11 @@ const UserModal = ({ setData, data }) => {
               </div>
               <div className="info-row">
                 <button
+<<<<<<< HEAD
                   style={{ cursor: "pointer", marginTop: "10px", height: "25px" }}
+=======
+                  style={{ cursor: "pointer", marginTop: "5px", height: "25px" }}
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
                   className="book-label"
                   onClick={handleMyBooksClick}
                 ><FontAwesomeIcon
@@ -74,7 +97,11 @@ const UserModal = ({ setData, data }) => {
               </div>
               <div className="info-row">
               <button
+<<<<<<< HEAD
                   style={{ cursor: "pointer", marginTop: "10px", height: "25px" }}
+=======
+                  style={{ cursor: "pointer", marginTop: "5px", height: "25px" }}
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
                   className="config-label"
                   onClick={handleMyBooksClick}
                 ><FontAwesomeIcon
@@ -85,6 +112,22 @@ const UserModal = ({ setData, data }) => {
                   Configurações
                 </button>
               </div>
+<<<<<<< HEAD
+=======
+              <div className="info-row">
+              <button
+                  style={{ cursor: "pointer", marginTop: "5px", height: "25px" }}
+                  className="logout-label"
+                  onClick={handleLogOutClick}
+                ><FontAwesomeIcon
+                    icon={faSignOut}
+                    className='logout-icon'
+                    onClick={openModal}
+                  />
+                  Logout
+                </button>
+              </div>
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
               </div>
             </div>
         </>

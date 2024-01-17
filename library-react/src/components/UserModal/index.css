@@ -48,7 +48,11 @@ label {
 .info-row {
   display: flex;
   justify-content: space-between;
+<<<<<<< HEAD
   margin-bottom: 10px;
+=======
+ 
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
 }
 
 .info-label {
@@ -122,6 +126,34 @@ label {
   color: #ffffff;
 }
 
+<<<<<<< HEAD
+=======
+
+.logout-label {
+  flex: 1;
+  font-weight: bold;
+  color: #000000;
+  border-color: #303030;
+  border-width: 1px;
+}
+
+.logout-label:hover {
+  flex: 1;
+  font-weight: bold;
+  background-color: #000000;
+  color: white;
+}
+
+.logout-icon{
+  margin-right: 85px;
+  margin-left: -90px;
+  color: #000000;
+}
+.logout-label:hover .logout-icon {
+  color: #ffffff;
+}
+
+>>>>>>> 4fdf649 (Mensagem do commit inicial)
 .info-value {
   flex: 2;
   color: #333;
