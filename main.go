@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	
+
 	"log"
 	"net/http"
 	"strconv"
@@ -19,8 +19,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-FALSO
-
 // ProductInfo representa os dados de um produto
 type ProductInfo struct {
 	ID    int     `json:"id"`
@@ -30,14 +28,14 @@ type ProductInfo struct {
 }
 type Credentials struct {
 	Email    string `json:"email"`
-	Password int `json:"password"`
+	Password int    `json:"password"`
 }
 type ResponseLoanInfo struct {
-	UserID    int     `json:"UserID"`
-	ProdutoID    []int  `json:"ProdutoID"`
-	RequestBooks int `json:"RequestBooks"`
-	
+	UserID       int   `json:"UserID"`
+	ProdutoID    []int `json:"ProdutoID"`
+	RequestBooks int   `json:"RequestBooks"`
 }
+
 // Configuração do banco de dados
 const (
 	DBUsername = "rocha"
@@ -45,6 +43,7 @@ const (
 	DBName     = "dsoftwarehouse"
 	ServerPort = ":8080"
 )
+
 var (
 	db  *sql.DB
 	err error
@@ -65,7 +64,7 @@ func init() {
 func main() {
 	r := mux.NewRouter()
 	corsOptions := handlers.CORS(
-		handlers.AllowedOrigins([]string{"*"}),  // Permitir solicitações de qualquer origem
+		handlers.AllowedOrigins([]string{"*"}), // Permitir solicitações de qualquer origem
 		handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
@@ -78,9 +77,6 @@ func main() {
 	updateChannel := make(chan map[string]interface{})
 	deleteChannel := make(chan int)
 	insertChannel := make(chan map[string]interface{})
-	
-	
-	
 
 	// Crie um canal para receber os resultados
 	resultChannel := make(chan []worker.ProductInfo)
@@ -93,198 +89,192 @@ func main() {
 	resultLoanChannel := make(chan []worker.SelectLoanInput)
 
 	updateLoanChannel := make(chan map[string]interface{})
-	
-defer close(resultChannel)
-var w http.ResponseWriter
-for i := 0; i < 5; i++ {
-    // Corrigir a chamada da função SelectProductWorker
-	
-    go worker.SelectProductWorker(db, i, selectChannel, resultChannel)
-    go worker.UpdateWorker(db, i, updateChannel)
-    go worker.DeleteWorker(db, i, deleteChannel)
-    // go worker.InsertUserWorker(db, i, insertChannel)
 
-	go worker.LoginUserWorker(db, i, loginChannel, loggedChannel)
-	go worker.InsertLoanWorker(db, i, insertChannel, w)
+	defer close(resultChannel)
+	var w http.ResponseWriter
+	for i := 0; i < 5; i++ {
+		// Corrigir a chamada da função SelectProductWorker
 
-	go worker.SelectLoanWorker(db, i, loanChannel, resultLoanChannel)	
-    go worker.SelectMyBooksWorker(db, i, selectMyBooksChannel, myBooksChannel)	
+		go worker.SelectProductWorker(db, i, selectChannel, resultChannel)
+		go worker.UpdateWorker(db, i, updateChannel)
+		go worker.DeleteWorker(db, i, deleteChannel)
+		// go worker.InsertUserWorker(db, i, insertChannel)
 
-	go worker.UpdateLoanWorker(db, i, updateLoanChannel)
+		go worker.LoginUserWorker(db, i, loginChannel, loggedChannel)
+		go worker.InsertLoanWorker(db, i, insertChannel, w)
 
-}
+		go worker.SelectLoanWorker(db, i, loanChannel, resultLoanChannel)
+		go worker.SelectMyBooksWorker(db, i, selectMyBooksChannel, myBooksChannel)
 
+		go worker.UpdateLoanWorker(db, i, updateLoanChannel)
 
-
-r.HandleFunc("/login/", func(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodOptions {
-        w.Header().Set("Access-Control-Allow-Origin", "*")
-        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        w.WriteHeader(http.StatusOK)
-        return
-    }
-	err := r.ParseForm()
-	if err != nil {
-		log.Println("Erro ao analisar dados do formulário:", err)
-		http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
-		return
 	}
 
-	// Obtenha os valores dos campos do formulário
-	
+	r.HandleFunc("/login/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		err := r.ParseForm()
+		if err != nil {
+			log.Println("Erro ao analisar dados do formulário:", err)
+			http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
+			return
+		}
 
-	loginInput := make(map[string]interface{})
+		// Obtenha os valores dos campos do formulário
 
-	loginInput["email"] = r.Form.Get("email")
-	loginInput["password"] = r.Form.Get("password")
-    
-    loginChannel <- loginInput
-    login := <-loggedChannel
+		loginInput := make(map[string]interface{})
 
-    jsonData, err := json.Marshal(login)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+		loginInput["email"] = r.Form.Get("email")
+		loginInput["password"] = r.Form.Get("password")
 
-    w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		loginChannel <- loginInput
+		login := <-loggedChannel
 
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusOK)
-    w.Write(jsonData, )
-}).Methods("GET", "OPTIONS")
+		jsonData, err := json.Marshal(login)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-
-r.HandleFunc("/select", func(w http.ResponseWriter, r *http.Request) {
-    // Verificar se a solicitação é um OPTIONS (usado para preflight CORS)
-    if r.Method == http.MethodOptions {
-        w.Header().Set("Access-Control-Allow-Origin", "*")
-        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        w.WriteHeader(http.StatusOK)
-        return
-    }
-
-    // Restante do código para tratamento do método GET
-    selectChannel <- 0
-    products := <-resultChannel
-
-    jsonData, err := json.Marshal(products)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-
-    w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusOK)
-    w.Write(jsonData)
-}).Methods("GET", "OPTIONS")
-
-
-r.HandleFunc("/selectLoan", func(w http.ResponseWriter, r *http.Request) {
-    // Verificar se a solicitação é um OPTIONS (usado para preflight CORS)
-    if r.Method == http.MethodOptions {
-        w.Header().Set("Access-Control-Allow-Origin", "*")
-        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        w.WriteHeader(http.StatusOK)
-        return
-    }
-
-    // Restante do código para tratamento do método GET
-    loanChannel <- 0
-    products := <-resultLoanChannel
-
-    jsonData, err := json.Marshal(products)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-
-    w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusOK)
-    w.Write(jsonData)
-}).Methods("GET", "OPTIONS")
-
-
-r.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodOptions {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		return
-	}
+		w.Write(jsonData)
+	}).Methods("GET", "OPTIONS")
 
-	err := r.ParseForm()
-	if err != nil {
-		log.Println("Erro ao analisar dados do formulário:", err)
-		http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
-		return
-	}
+	r.HandleFunc("/select", func(w http.ResponseWriter, r *http.Request) {
+		// Verificar se a solicitação é um OPTIONS (usado para preflight CORS)
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 
-	// Obtenha os valores dos campos do formulário
-	updateInput := make(map[string]interface{})
-	updateInput["Field"] = r.Form.Get("Field")
-	updateInput["Product"] = r.Form.Get("Product")
-	updateInput["ID"] = r.Form.Get("ID")
+		// Restante do código para tratamento do método GET
+		selectChannel <- 0
+		products := <-resultChannel
 
-	updateChannel <- updateInput
-	
-	time.Sleep(time.Second * 1)
+		jsonData, err := json.Marshal(products)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, updateInput)
-}).Methods("PUT", "OPTIONS")
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonData)
+	}).Methods("GET", "OPTIONS")
 
-r.HandleFunc("/delete/{id}", func(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	idStr := vars["id"]
+	r.HandleFunc("/selectLoan", func(w http.ResponseWriter, r *http.Request) {
+		// Verificar se a solicitação é um OPTIONS (usado para preflight CORS)
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
-		return
-	}
+		// Restante do código para tratamento do método GET
+		loanChannel <- 0
+		products := <-resultLoanChannel
 
-	deleteChannel <- id
-	time.Sleep(time.Second * 1)
-	fmt.Fprint(w, "Delete request received for ID:", id)
-}).Methods("DELETE")
+		jsonData, err := json.Marshal(products)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-r.HandleFunc("/insertLoan/", func(w http.ResponseWriter, r *http.Request) {
-    if r.Method == http.MethodOptions {
-        w.Header().Set("Access-Control-Allow-Origin", "*")
-        w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        w.WriteHeader(http.StatusOK)
-        return
-    }
-    err := r.ParseForm()
-    if err != nil {
-        log.Println("Erro ao analisar dados do formulário:", err)
-        http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
-        return
-    }
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-    // Criar uma instância de ResponseLoanInfo
-	finish := make(map[string]interface{})
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(jsonData)
+	}).Methods("GET", "OPTIONS")
+
+	r.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		err := r.ParseForm()
+		if err != nil {
+			log.Println("Erro ao analisar dados do formulário:", err)
+			http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
+			return
+		}
+
+		// Obtenha os valores dos campos do formulário
+		updateInput := make(map[string]interface{})
+		updateInput["Field"] = r.Form.Get("Field")
+		updateInput["Product"] = r.Form.Get("Product")
+		updateInput["ID"] = r.Form.Get("ID")
+
+		updateChannel <- updateInput
+
+		time.Sleep(time.Second * 1)
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, updateInput)
+	}).Methods("PUT", "OPTIONS")
+
+	r.HandleFunc("/delete/{id}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		idStr := vars["id"]
+
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			http.Error(w, "Invalid ID", http.StatusBadRequest)
+			return
+		}
+
+		deleteChannel <- id
+		time.Sleep(time.Second * 1)
+		fmt.Fprint(w, "Delete request received for ID:", id)
+	}).Methods("DELETE")
+
+	r.HandleFunc("/insertLoan/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		err := r.ParseForm()
+		if err != nil {
+			log.Println("Erro ao analisar dados do formulário:", err)
+			http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
+			return
+		}
+
+		// Criar uma instância de ResponseLoanInfo
+		finish := make(map[string]interface{})
 
 		// Obtenha os valores dos campos do formulário
 		userID, err := strconv.Atoi(r.Form.Get("UserID"))
@@ -294,7 +284,7 @@ r.HandleFunc("/insertLoan/", func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		finish["UserID"] = userID
-		
+
 		// Pode ser necessário fazer um parsing dos IDs dependendo do formato
 		produtoIDsStr := strings.Split(r.Form.Get("ProdutoID"), ",")
 		produtoIDs := make([]int, len(produtoIDsStr))
@@ -316,15 +306,11 @@ r.HandleFunc("/insertLoan/", func(w http.ResponseWriter, r *http.Request) {
 		}
 		finish["RequestBooks"] = requestBooks
 
-
 		insertChannel <- finish
 
 		time.Sleep(time.Second * 1)
 		fmt.Fprint(w, "Insert request received")
 	}).Methods("POST")
-
-
-
 
 	r.HandleFunc("/selectMybooks/", func(w http.ResponseWriter, r *http.Request) {
 		// Verificar se a solicitação é um OPTIONS (usado para preflight CORS)
@@ -335,47 +321,44 @@ r.HandleFunc("/insertLoan/", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-	
+
 		err := r.ParseForm()
 		if err != nil {
 			log.Println("Erro ao analisar dados do formulário:", err)
 			http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
 			return
 		}
-	
+
 		// Criar uma instância de ResponseLoanInfo
-	
-			// Obtenha os valores dos campos do formulário
-			userID, err := strconv.Atoi(r.Form.Get("UserID"))
-			if err != nil {
-				log.Println("Erro ao analisar dados do formulário:", err)
-				http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
-				return
-			}
-			fmt.Println(userID)
-			
+
+		// Obtenha os valores dos campos do formulário
+		userID, err := strconv.Atoi(r.Form.Get("UserID"))
+		if err != nil {
+			log.Println("Erro ao analisar dados do formulário:", err)
+			http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
+			return
+		}
+		fmt.Println(userID)
 
 		// Restante do código para tratamento do método GET
 		selectMyBooksChannel <- userID
 		products := <-myBooksChannel
-	
+
 		jsonData, err := json.Marshal(products)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-	
+
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	
+
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(jsonData)
-		
+
 	}).Methods("GET", "OPTIONS")
-
-
 
 	r.HandleFunc("/updateLoan/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodOptions {
@@ -385,35 +368,34 @@ r.HandleFunc("/insertLoan/", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-	
+
 		err := r.ParseForm()
 		if err != nil {
 			log.Println("Erro ao analisar dados do formulário:", err)
 			http.Error(w, "Erro ao analisar dados do formulário", http.StatusInternalServerError)
 			return
 		}
-	
+
 		// Obtenha os valores dos campos do formulário
 		updateInput := make(map[string]interface{})
 		updateInput["Field"] = r.Form.Get("Field")
 		updateInput["Product"] = r.Form.Get("Product")
 		updateInput["ID"] = r.Form.Get("ID")
 		updateInput["UserID"] = r.Form.Get("UserID")
-	
+
 		updateLoanChannel <- updateInput
-		
+
 		time.Sleep(time.Second * 1)
-	
+
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	
+
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, updateInput)
 	}).Methods("PUT", "OPTIONS")
-	
-	
+
 	fmt.Println("Server listening on", ServerPort)
 	log.Fatal(http.ListenAndServe(ServerPort, r))
 }
